@@ -1,0 +1,24 @@
+{
+  "name": "node-exp-google-maps",
+  "version": "1.0.0",
+  "description": "Topics:\r  * APIs\r  * API Documentation\r  * Rate Limits\r  * Multiple requests",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JohnJohnx4/Node-Express-Gmaps.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JohnJohnx4/Node-Express-Gmaps/issues"
+  },
+  "homepage": "https://github.com/JohnJohnx4/Node-Express-Gmaps#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "nodemon": "^1.17.1"
+  }
+}
