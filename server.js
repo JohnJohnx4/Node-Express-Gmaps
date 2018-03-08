@@ -3,32 +3,36 @@ const express = require('express');
 const server = express();
 const axios = require('axios');
 const STATUS_USER_ERROR = 422;
-const { PORT, gmaps } = require('./config.js');
+const fetch = require('node-fetch');
+
+const config = require('./config.js');
+
+const PORT = config.port;
+const API_KEY = config.gmaps.apiKey;
 
 server.use(bodyParser.json());
 
-let searchlink = "https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters";
-// example https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&type=restaurant&keyword=cruise&key=YOUR_API_KEY
-// https://maps.googleapis.com/maps/api/place/textsearch/xml?query=restaurants+in+Sydney&key=YOUR_API_KEY
+let searchlink = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=";
+let key = `&key=` + API_KEY;
 
-server.get('/', (req, res) => {
-    console.log('it is hitting the server');
-    console.log(key);
-    res.send("Hello World!");
+server.get('/place', (req, res) => {
+    if (req.query.term) {
+        var query = req.query.term.replace(" ", "+");
+
+        let searchURL = searchlink + query + key;
+        console.log(searchURL);
+        fetch(searchURL)
+        .then(res => res.json())
+        .then(json => {
+            console.log(json.results[0]);
+            res.send(json.results[0]);
+        })
+        .catch((err) => {
+            res.status(STATUS_USER_ERROR);
+            res.send('There was an error fetching the place');
+        });
+    }
 });
 
-// server.get('/places', (req, res) => {
-//     let query = req.body.query;
-//     axios.get('https://maps.googleapis.com/maps/api/place/textsearch/xml?query=restaurants+in+Sydney&key=YOUR_API_KEY')
-//     .then(function (response) {
-//         console.log(response);
-//     })
-//     .catch(function (error) {
-//         console.log(error);
-//     });
 
-// });
-
-
-
-server.listen(3000);
+server.listen(PORT);
